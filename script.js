@@ -13,8 +13,9 @@ const state = {
   category: "Todos",
   search: "",
   cart: [],
-  stock: JSON.parse(localStorage.getItem("verdejarStock") || "[]"),
+  stock: JSON.parse(localStorage.getItem("gasparStock") || "[]"),
 };
+
 const productGrid = document.querySelector("#product-grid");
 const productTemplate = document.querySelector("#product-template");
 const emptyState = document.querySelector("#empty-state");
@@ -29,8 +30,26 @@ const formMessage = document.querySelector("#form-message");
 const userGreeting = document.querySelector("#user-greeting");
 const signupForm = document.querySelector("#signup-form");
 const signupMessage = document.querySelector("#signup-message");
+const adminLoginForm = document.querySelector("#admin-login-form");
+const adminMessage = document.querySelector("#admin-message");
+const adminSignupForm = document.querySelector("#admin-signup-form");
+const adminSignupMessage = document.querySelector("#admin-signup-message");
+const adminRecoverForm = document.querySelector("#admin-recover-form");
+const adminRecoverMessage = document.querySelector("#admin-recover-message");
 const loginSwitch = document.querySelector("#login-switch");
 const signupSwitch = document.querySelector("#signup-switch");
+const adminSwitch = document.querySelector("#admin-switch");
+const adminLoginSwitch = document.querySelector("#admin-login-switch");
+const adminSignupSwitch = document.querySelector("#admin-signup-switch");
+const adminRecoverSwitch = document.querySelector("#admin-recover-switch");
+const adminBackSwitch = document.querySelector("#admin-back-switch");
+const adminDashboard = document.querySelector("#admin-dashboard");
+const adminUsernameDisplay = document.querySelector("#admin-username-display");
+const adminPasswordDisplay = document.querySelector("#admin-password-display");
+const changePasswordModal = document.querySelector("#change-password-modal");
+const changePasswordForm = document.querySelector("#change-password-form");
+const changePasswordMessage = document.querySelector("#change-password-message");
+let adminPasswordVisible = false;
 const stockForm = document.querySelector("#stock-form");
 const stockTableBody = document.querySelector("#stock-table-body");
 const stockEmpty = document.querySelector("#stock-empty");
@@ -41,76 +60,379 @@ const stockTotalProfit = document.querySelector("#stock-total-profit");
 
 function showSignup() {
   loginForm.classList.add("hidden");
+  adminLoginForm.classList.add("hidden");
+  adminSignupForm.classList.add("hidden");
+  adminRecoverForm.classList.add("hidden");
   signupForm.classList.remove("hidden");
   loginSwitch.classList.add("hidden");
   signupSwitch.classList.remove("hidden");
+  adminSwitch.classList.add("hidden");
+  adminLoginSwitch.classList.add("hidden");
+  adminSignupSwitch.classList.add("hidden");
+  adminRecoverSwitch.classList.add("hidden");
+  adminBackSwitch.classList.add("hidden");
   document.querySelector(".login-card .eyebrow").textContent = "Faça seu cadastro";
   document.querySelector(".login-card h1").innerHTML = "Crie sua conta<br /><em>e aproveite.</em>";
-  document.querySelector(".login-description").textContent = "Preencha seus dados para começar a comprar fresquinho.";
+  document.querySelector(".login-description").textContent = "Preencha seus dados para começar a comprar na Quitanda do Gaspar.";
   signupMessage.textContent = "";
 }
 
 function showLogin() {
   signupForm.classList.add("hidden");
+  adminLoginForm.classList.add("hidden");
+  adminSignupForm.classList.add("hidden");
+  adminRecoverForm.classList.add("hidden");
   loginForm.classList.remove("hidden");
   signupSwitch.classList.add("hidden");
   loginSwitch.classList.remove("hidden");
+  adminSwitch.classList.remove("hidden");
+  adminLoginSwitch.classList.add("hidden");
+  adminSignupSwitch.classList.add("hidden");
+  adminRecoverSwitch.classList.add("hidden");
+  adminBackSwitch.classList.add("hidden");
   document.querySelector(".login-card .eyebrow").textContent = "Bem-vindo à nossa quitanda";
-  document.querySelector(".login-card h1").innerHTML = "Entre para comprar<br /><em>fresquinho.</em>";
-  document.querySelector(".login-description").textContent = "Informe seus dados para acessar a feira de hoje.";
+  document.querySelector(".login-card h1").innerHTML = "O fresquinho<br /><em>da feira.</em>";
+  document.querySelector(".login-description").textContent = "Entre para escolher seus produtos favoritos.";
+  document.querySelector("#show-admin-login").textContent = localStorage.getItem("gasparAdmin")
+    ? "Acesso do administrador"
+    : "Cadastrar administrador";
   formMessage.textContent = "";
 }
 
-function showAuthenticatedUser() {
-  const savedUser = JSON.parse(localStorage.getItem("verdejarUser"));
-  if (!savedUser) return;
+function showAdminLogin() {
+  if (!localStorage.getItem("gasparAdmin")) {
+    showAdminSignup();
+    return;
+  }
+  loginForm.classList.add("hidden");
+  signupForm.classList.add("hidden");
+  adminSignupForm.classList.add("hidden");
+  adminLoginForm.classList.remove("hidden");
+  adminRecoverForm.classList.add("hidden");
+  loginSwitch.classList.add("hidden");
+  signupSwitch.classList.add("hidden");
+  adminSwitch.classList.add("hidden");
+  adminLoginSwitch.classList.add("hidden");
+  document.querySelector("#show-recover-password").classList.remove("hidden");
+  adminSignupSwitch.classList.add("hidden");
+  adminRecoverSwitch.classList.add("hidden");
+  adminBackSwitch.classList.remove("hidden");
+  document.querySelector(".login-card .eyebrow").textContent = "Acesso restrito";
+  document.querySelector(".login-card h1").innerHTML = "Painel do<br /><em>Gaspar.</em>";
+  document.querySelector(".login-description").textContent = "Entre com suas credenciais administrativas para gerenciar o estoque.";
+  adminMessage.textContent = "";
+  adminMessage.classList.remove("success");
+}
+
+function showAdminSignup() {
+  if (localStorage.getItem("gasparAdmin")) {
+    showAdminLogin();
+    return;
+  }
+  loginForm.classList.add("hidden");
+  signupForm.classList.add("hidden");
+  adminLoginForm.classList.add("hidden");
+  adminRecoverForm.classList.add("hidden");
+  adminSignupForm.classList.remove("hidden");
+  loginSwitch.classList.add("hidden");
+  signupSwitch.classList.add("hidden");
+  adminSwitch.classList.add("hidden");
+  adminLoginSwitch.classList.add("hidden");
+  adminSignupSwitch.classList.add("hidden");
+  adminRecoverSwitch.classList.add("hidden");
+  adminBackSwitch.classList.remove("hidden");
+  document.querySelector(".login-card .eyebrow").textContent = "Configuração inicial";
+  document.querySelector(".login-card h1").innerHTML = "Crie o acesso<br /><em>do Gaspar.</em>";
+  document.querySelector(".login-description").textContent = "Cadastre a primeira conta administrativa para gerenciar a quitanda.";
+  adminSignupMessage.textContent = "";
+}
+
+function showAdminAccess() {
+  if (localStorage.getItem("gasparAdmin")) {
+    showAdminLogin();
+  } else {
+    showAdminSignup();
+  }
+}
+
+function showAdminRecover() {
+  loginForm.classList.add("hidden");
+  signupForm.classList.add("hidden");
+  adminLoginForm.classList.add("hidden");
+  adminSignupForm.classList.add("hidden");
+  adminRecoverForm.classList.remove("hidden");
+  loginSwitch.classList.add("hidden");
+  signupSwitch.classList.add("hidden");
+  adminSwitch.classList.add("hidden");
+  adminLoginSwitch.classList.add("hidden");
+  adminSignupSwitch.classList.add("hidden");
+  adminRecoverSwitch.classList.remove("hidden");
+  adminBackSwitch.classList.add("hidden");
+  document.querySelector(".login-card .eyebrow").textContent = "Recuperar acesso";
+  document.querySelector(".login-card h1").innerHTML = "Recupere sua<br /><em>senha.</em>";
+  document.querySelector(".login-description").textContent = "Informe seu usuário, a palavra de recuperação e defina uma nova senha.";
+  adminRecoverMessage.textContent = "";
+}
+
+function showAuthenticatedUser(user) {
+  if (!user || user.role !== "customer") return;
+  document.body.classList.remove("is-admin");
   document.body.classList.add("authenticated");
   loginScreen.classList.add("hidden");
-  userGreeting.textContent = `Olá, ${savedUser.name.split(" ")[0]}`;
+  adminDashboard.classList.add("hidden");
+  userGreeting.textContent = `Olá, ${user.name}`;
+}
+
+function showAdminDashboard() {
+  document.body.classList.remove("authenticated");
+  document.body.classList.add("is-admin");
+  loginScreen.classList.add("hidden");
+  adminDashboard.classList.remove("hidden");
+  adminPasswordVisible = false;
+  renderAdminCredentials();
+  renderStock();
+}
+
+function renderAdminCredentials() {
+  const adminData = JSON.parse(localStorage.getItem("gasparAdmin") || "null");
+  if (!adminData) return;
+  adminUsernameDisplay.textContent = adminData.username;
+  adminPasswordDisplay.textContent = adminPasswordVisible ? adminData.password : "••••••••";
+  const toggleButton = document.querySelector("#toggle-admin-password");
+  toggleButton.textContent = adminPasswordVisible ? "Ocultar" : "Mostrar";
+  toggleButton.setAttribute("aria-label", `${adminPasswordVisible ? "Ocultar" : "Mostrar"} senha`);
+}
+
+function normalizeName(value) {
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase("pt-BR");
 }
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
   formMessage.textContent = "";
   if (!loginForm.checkValidity()) {
-    formMessage.textContent = "Preencha seu nome e uma senha com pelo menos 6 caracteres.";
+    formMessage.textContent = "Informe seu nome completo e sua senha.";
     loginForm.reportValidity();
     return;
   }
   const formData = new FormData(loginForm);
-  const savedUser = JSON.parse(localStorage.getItem("verdejarUser") || "null");
-  const user = {
-    name: formData.get("name").trim(),
-    email: savedUser?.email || "",
-  };
-  localStorage.setItem("verdejarUser", JSON.stringify(user));
+  const savedUser = JSON.parse(localStorage.getItem("gasparCustomer") || "null");
+  const name = String(formData.get("name")).trim().replace(/\s+/g, " ");
+  const password = String(formData.get("password"));
+  if (
+    !savedUser ||
+    normalizeName(name) !== normalizeName(`${savedUser.name} ${savedUser.surname}`) ||
+    password !== savedUser.password
+  ) {
+    formMessage.textContent = "Nome ou senha incorretos. Confira seus dados ou faça seu cadastro.";
+    return;
+  }
+  const user = { name: savedUser.name, role: "customer" };
+  localStorage.setItem("gasparSession", JSON.stringify(user));
   loginForm.reset();
-  showAuthenticatedUser();
+  showAuthenticatedUser(user);
 });
 
 signupForm.addEventListener("submit", (event) => {
   event.preventDefault();
   signupMessage.textContent = "";
   if (!signupForm.checkValidity()) {
-    signupMessage.textContent = "Use nome completo, e-mail válido e uma senha forte.";
+    signupMessage.textContent = "Preencha seu nome, sobrenome e uma senha forte.";
     signupForm.reportValidity();
     return;
   }
   const formData = new FormData(signupForm);
-  const password = formData.get("password");
-  const confirmation = formData.get("password-confirm");
-  if (password !== confirmation) {
-    signupMessage.textContent = "As duas senhas precisam ser iguais.";
-    return;
-  }
-  const user = { name: formData.get("name").trim(), email: formData.get("email").trim() };
-  localStorage.setItem("verdejarUser", JSON.stringify(user));
+  const user = {
+    name: String(formData.get("name")).trim().replace(/\s+/g, " "),
+    surname: String(formData.get("surname")).trim().replace(/\s+/g, " "),
+    password: String(formData.get("password")),
+  };
+  localStorage.setItem("gasparCustomer", JSON.stringify(user));
+  localStorage.setItem("gasparSession", JSON.stringify({ name: user.name, role: "customer" }));
   signupForm.reset();
-  showAuthenticatedUser();
+  showAuthenticatedUser({ name: user.name, role: "customer" });
 });
 
 document.querySelector("#show-signup").addEventListener("click", showSignup);
 document.querySelector("#show-login").addEventListener("click", showLogin);
+document.querySelector("#show-admin-login").addEventListener("click", showAdminAccess);
+document.querySelector("#show-admin-signup").addEventListener("click", showAdminSignup);
+document.querySelector("#show-recover-password").addEventListener("click", showAdminRecover);
+document.querySelector("#back-to-customer").addEventListener("click", showLogin);
+document.querySelector("#back-to-admin-login-from-recover").addEventListener("click", showAdminLogin);
+
+adminLoginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  adminMessage.textContent = "";
+  adminMessage.classList.remove("success");
+  if (!adminLoginForm.checkValidity()) {
+    adminMessage.textContent = "Informe o usuário e a senha do administrador.";
+    adminLoginForm.reportValidity();
+    return;
+  }
+  const formData = new FormData(adminLoginForm);
+  const username = String(formData.get("name")).trim();
+  const password = String(formData.get("password"));
+  const savedAdmin = localStorage.getItem("gasparAdmin");
+  if (!savedAdmin) {
+    adminMessage.textContent = "Ainda não há administrador cadastrado. Crie a primeira conta.";
+    adminLoginSwitch.classList.remove("hidden");
+    return;
+  }
+  const adminData = JSON.parse(savedAdmin);
+  if (username !== adminData.username || password !== adminData.password) {
+    adminMessage.textContent = "Usuário ou senha incorretos.";
+    return;
+  }
+  localStorage.setItem("gasparSession", JSON.stringify({ role: "admin" }));
+  adminLoginForm.reset();
+  showAdminDashboard();
+});
+
+adminSignupForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  adminSignupMessage.textContent = "";
+  if (localStorage.getItem("gasparAdmin")) {
+    adminSignupMessage.textContent = "Já existe uma conta de administrador. Entre com ela.";
+    showAdminLogin();
+    adminMessage.textContent = "Já existe uma conta de administrador. Entre com ela.";
+    return;
+  }
+  if (!adminSignupForm.checkValidity()) {
+    adminSignupMessage.textContent = "Preencha os campos e escolha uma senha forte.";
+    adminSignupForm.reportValidity();
+    return;
+  }
+
+  const formData = new FormData(adminSignupForm);
+  const username = String(formData.get("name")).trim();
+  const password = String(formData.get("password"));
+  const confirmPassword = String(formData.get("confirmPassword"));
+  const recoveryAnswer = normalizeName(String(formData.get("recoveryAnswer")));
+  if (username.length < 3 || recoveryAnswer.length < 3) {
+    adminSignupMessage.textContent = "O usuário e a palavra de recuperação precisam ter pelo menos três caracteres.";
+    return;
+  }
+  if (password !== confirmPassword) {
+    adminSignupMessage.textContent = "As senhas não coincidem. Confira e tente novamente.";
+    document.querySelector("#admin-signup-confirm").focus();
+    return;
+  }
+
+  localStorage.setItem("gasparAdmin", JSON.stringify({ username, password, recoveryAnswer }));
+  localStorage.setItem("gasparSession", JSON.stringify({ role: "admin" }));
+  adminSignupForm.reset();
+  showAdminDashboard();
+});
+
+adminRecoverForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  adminRecoverMessage.textContent = "";
+  adminRecoverMessage.classList.remove("success");
+  if (!adminRecoverForm.checkValidity()) {
+    adminRecoverMessage.textContent = "Preencha todos os campos.";
+    adminRecoverForm.reportValidity();
+    return;
+  }
+  const formData = new FormData(adminRecoverForm);
+  const username = String(formData.get("username")).trim();
+  const answer = normalizeName(String(formData.get("answer")));
+  const newPassword = String(formData.get("newPassword"));
+  const confirmPassword = String(formData.get("confirmPassword"));
+  const savedAdmin = localStorage.getItem("gasparAdmin");
+  if (!savedAdmin) {
+    adminRecoverMessage.textContent = "Ainda não há administrador cadastrado.";
+    return;
+  }
+  const adminData = JSON.parse(savedAdmin);
+  if (username !== adminData.username) {
+    adminRecoverMessage.textContent = "Usuário não encontrado.";
+    return;
+  }
+  const isCorrectAnswer = adminData.recoveryAnswer
+    ? answer === adminData.recoveryAnswer
+    : ["quitanda do gaspar", "gaspar", "quitanda gaspar"].includes(answer);
+  if (!isCorrectAnswer) {
+    adminRecoverMessage.textContent = "Resposta incorreta. Tente novamente.";
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    adminRecoverMessage.textContent = "As senhas não coincidem. Confira e tente novamente.";
+    document.querySelector("#admin-recover-confirm-password").focus();
+    return;
+  }
+
+  localStorage.setItem("gasparAdmin", JSON.stringify({ ...adminData, password: newPassword }));
+  adminRecoverForm.reset();
+  showAdminLogin();
+  adminMessage.textContent = "Senha redefinida. Entre com sua nova senha.";
+  adminMessage.classList.add("success");
+});
+
+document.querySelector("#toggle-admin-password").addEventListener("click", () => {
+  adminPasswordVisible = !adminPasswordVisible;
+  renderAdminCredentials();
+});
+
+document.querySelector("#change-admin-password-button").addEventListener("click", () => {
+  changePasswordForm.reset();
+  changePasswordMessage.textContent = "";
+  changePasswordMessage.classList.remove("success");
+  changePasswordModal.classList.remove("hidden");
+  document.querySelector("#current-password").focus();
+});
+
+function closeChangePassword() {
+  changePasswordModal.classList.add("hidden");
+  changePasswordForm.reset();
+  changePasswordMessage.textContent = "";
+  changePasswordMessage.classList.remove("success");
+}
+
+document.querySelector("#close-password-modal").addEventListener("click", closeChangePassword);
+changePasswordModal.addEventListener("click", (event) => {
+  if (event.target === changePasswordModal) closeChangePassword();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !changePasswordModal.classList.contains("hidden")) {
+    closeChangePassword();
+  }
+});
+
+changePasswordForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  changePasswordMessage.textContent = "";
+  changePasswordMessage.classList.remove("success");
+  if (!changePasswordForm.checkValidity()) {
+    changePasswordMessage.textContent = "Informe a senha atual e uma nova senha forte.";
+    changePasswordForm.reportValidity();
+    return;
+  }
+
+  const formData = new FormData(changePasswordForm);
+  const currentPassword = String(formData.get("current"));
+  const newPassword = String(formData.get("new"));
+  const confirmPassword = String(formData.get("confirm"));
+  const adminData = JSON.parse(localStorage.getItem("gasparAdmin") || "null");
+  if (!adminData || currentPassword !== adminData.password) {
+    changePasswordMessage.textContent = "A senha atual está incorreta.";
+    document.querySelector("#current-password").focus();
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    changePasswordMessage.textContent = "As novas senhas não coincidem.";
+    document.querySelector("#confirm-new-password").focus();
+    return;
+  }
+
+  localStorage.setItem("gasparAdmin", JSON.stringify({ ...adminData, password: newPassword }));
+  adminPasswordVisible = false;
+  renderAdminCredentials();
+  changePasswordForm.reset();
+  changePasswordMessage.textContent = "Senha alterada com sucesso.";
+  changePasswordMessage.classList.add("success");
+});
 
 document.querySelectorAll(".toggle-password").forEach((button) => {
   button.addEventListener("click", () => {
@@ -123,11 +445,19 @@ document.querySelectorAll(".toggle-password").forEach((button) => {
 });
 
 document.querySelector("#logout-button").addEventListener("click", () => {
-  localStorage.removeItem("verdejarUser");
+  localStorage.removeItem("gasparSession");
   document.body.classList.remove("authenticated");
   loginScreen.classList.remove("hidden");
   cartPanel.classList.remove("open");
   formMessage.textContent = "";
+  showLogin();
+});
+
+document.querySelector("#admin-logout-button").addEventListener("click", () => {
+  localStorage.removeItem("gasparSession");
+  document.body.classList.remove("is-admin");
+  adminDashboard.classList.add("hidden");
+  loginScreen.classList.remove("hidden");
   showLogin();
 });
 
@@ -268,7 +598,7 @@ function renderStock() {
     deleteButton.textContent = "Excluir";
     deleteButton.addEventListener("click", () => {
       state.stock = state.stock.filter((item) => item.id !== stockItem.id);
-      localStorage.setItem("verdejarStock", JSON.stringify(state.stock));
+      localStorage.setItem("gasparStock", JSON.stringify(state.stock));
       renderStock();
     });
     actionCell.appendChild(deleteButton);
@@ -307,7 +637,7 @@ stockForm.addEventListener("submit", (event) => {
     cost,
     price,
   });
-  localStorage.setItem("verdejarStock", JSON.stringify(state.stock));
+  localStorage.setItem("gasparStock", JSON.stringify(state.stock));
   stockForm.reset();
   stockMessage.textContent = "Produto adicionado ao estoque.";
   renderStock();
@@ -345,4 +675,12 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
 renderProducts();
 renderCart();
 renderStock();
-showAuthenticatedUser();
+document.querySelector("#show-admin-login").textContent = localStorage.getItem("gasparAdmin")
+  ? "Acesso do administrador"
+  : "Cadastrar administrador";
+const savedSession = JSON.parse(localStorage.getItem("gasparSession") || "null");
+if (savedSession?.role === "admin") {
+  showAdminDashboard();
+} else if (savedSession?.role === "customer") {
+  showAuthenticatedUser(savedSession);
+}

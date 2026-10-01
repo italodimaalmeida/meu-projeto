@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Verdejar, a quitanda com frutas, verduras e produtos frescos."
+      content="Quitanda do Gaspar: frutas, verduras e produtos frescos."
     />
-    <title>Verdejar | Quitanda fresca</title>
+    <title>Quitanda do Gaspar | Produtos fresquinhos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,20 +21,20 @@
       <div class="login-card">
         <div class="login-brand">
           <span class="logo-icon">✿</span>
-          <span>verdejar</span>
+          <span>Quitanda do Gaspar</span>
         </div>
         <p class="eyebrow">Bem-vindo à nossa quitanda</p>
-        <h1>Entre para comprar<br /><em>fresquinho.</em></h1>
-        <p class="login-description">Informe seus dados para acessar a feira de hoje.</p>
+        <h1>O fresquinho<br /><em>da feira.</em></h1>
+        <p class="login-description">Entre para escolher seus produtos favoritos.</p>
         <form id="login-form" novalidate>
           <div class="form-field">
-            <label for="login-name">Nome</label>
-            <input id="login-name" name="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" required />
+            <label for="login-name">Nome completo</label>
+            <input id="login-name" name="name" type="text" placeholder="Seu nome e sobrenome" autocomplete="name" required />
           </div>
           <div class="form-field">
             <label for="login-password">Senha</label>
             <div class="password-input">
-              <input id="login-password" name="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" minlength="6" required />
+              <input id="login-password" name="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required />
               <button class="toggle-password" type="button" data-password-target="login-password" aria-label="Mostrar senha">Mostrar</button>
             </div>
           </div>
@@ -43,52 +43,184 @@
         </form>
         <form id="signup-form" class="hidden" novalidate>
           <div class="form-field">
-            <label for="signup-name">Nome completo</label>
-            <input id="signup-name" name="name" type="text" placeholder="Digite seu nome completo" autocomplete="name" minlength="3" required />
+            <label for="signup-name">Nome</label>
+            <input id="signup-name" name="name" type="text" placeholder="Seu primeiro nome" autocomplete="given-name" minlength="2" required />
           </div>
           <div class="form-field">
-            <label for="signup-email">E-mail</label>
-            <input id="signup-email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" required />
+            <label for="signup-surname">Sobrenome</label>
+            <input id="signup-surname" name="surname" type="text" placeholder="Seu sobrenome" autocomplete="family-name" minlength="2" required />
           </div>
           <div class="form-field">
             <label for="signup-password">Senha</label>
             <div class="password-input">
-              <input id="signup-password" name="password" type="password" placeholder="Ex.: Verdejar1" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}" required />
+              <input id="signup-password" name="password" type="password" placeholder="Crie uma senha forte" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}" required />
               <button class="toggle-password" type="button" data-password-target="signup-password" aria-label="Mostrar senha">Mostrar</button>
             </div>
-            <small class="password-hint">Use letra maiúscula, minúscula e número.</small>
-          </div>
-          <div class="form-field">
-            <label for="signup-password-confirm">Repita a senha</label>
-            <div class="password-input">
-              <input id="signup-password-confirm" name="password-confirm" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" required />
-              <button class="toggle-password" type="button" data-password-target="signup-password-confirm" aria-label="Mostrar senha repetida">Mostrar</button>
-            </div>
+            <small class="password-hint">A senha deve ter letra maiúscula, minúscula e número.</small>
           </div>
           <p class="form-message" id="signup-message" role="alert"></p>
           <button class="primary-button login-button" type="submit">Criar minha conta <span>→</span></button>
         </form>
-        <p class="form-switch" id="login-switch">Ainda não tem uma conta? <button type="button" id="show-signup">Cadastre-se</button></p>
+        <form id="admin-login-form" class="hidden" novalidate>
+          <div class="form-field">
+            <label for="admin-name">Usuário administrador</label>
+            <input id="admin-name" name="name" type="text" placeholder="Usuário" autocomplete="username" required />
+          </div>
+          <div class="form-field">
+            <label for="admin-password">Senha</label>
+            <div class="password-input">
+              <input id="admin-password" name="password" type="password" placeholder="Senha administrativa" autocomplete="current-password" required />
+              <button class="toggle-password" type="button" data-password-target="admin-password" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+          </div>
+          <p class="form-message" id="admin-message" role="alert"></p>
+          <button class="primary-button login-button" type="submit">Entrar como administrador <span>→</span></button>
+          <p class="form-switch"><button type="button" id="show-recover-password">Esqueceu a senha?</button></p>
+        </form>
+        <form id="admin-recover-form" class="hidden" novalidate>
+          <p class="form-info">Informe seu usuário e a palavra de recuperação cadastrada.</p>
+          <div class="form-field">
+            <label for="admin-recover-user">Usuário</label>
+            <input id="admin-recover-user" name="username" type="text" placeholder="Digite seu usuário" autocomplete="username" required />
+          </div>
+          <div class="form-field">
+            <label for="admin-security-answer">Palavra de recuperação</label>
+            <input id="admin-security-answer" name="answer" type="text" placeholder="Digite sua palavra de recuperação" autocomplete="off" required />
+          </div>
+          <div class="form-field">
+            <label for="admin-recover-new-password">Nova senha</label>
+            <div class="password-input">
+              <input id="admin-recover-new-password" name="newPassword" type="password" placeholder="Crie uma senha forte" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}" required />
+              <button class="toggle-password" type="button" data-password-target="admin-recover-new-password" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+            <small class="password-hint">A senha deve ter letra maiúscula, minúscula e número.</small>
+          </div>
+          <div class="form-field">
+            <label for="admin-recover-confirm-password">Confirmar nova senha</label>
+            <div class="password-input">
+              <input id="admin-recover-confirm-password" name="confirmPassword" type="password" placeholder="Digite a nova senha novamente" autocomplete="new-password" required />
+              <button class="toggle-password" type="button" data-password-target="admin-recover-confirm-password" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+          </div>
+          <p class="form-message" id="admin-recover-message" role="alert"></p>
+          <button class="primary-button login-button" type="submit">Redefinir senha <span>→</span></button>
+        </form>
+        <form id="admin-signup-form" class="hidden" novalidate>
+          <div class="form-field">
+            <label for="admin-signup-name">Usuário</label>
+            <input id="admin-signup-name" name="name" type="text" placeholder="Crie um usuário" autocomplete="username" minlength="3" required />
+          </div>
+          <div class="form-field">
+            <label for="admin-signup-password">Senha</label>
+            <div class="password-input">
+              <input id="admin-signup-password" name="password" type="password" placeholder="Crie uma senha forte" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}" required />
+              <button class="toggle-password" type="button" data-password-target="admin-signup-password" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+            <small class="password-hint">A senha deve ter letra maiúscula, minúscula e número.</small>
+          </div>
+          <div class="form-field">
+            <label for="admin-signup-confirm">Confirmar senha</label>
+            <div class="password-input">
+              <input id="admin-signup-confirm" name="confirmPassword" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" required />
+              <button class="toggle-password" type="button" data-password-target="admin-signup-confirm" aria-label="Mostrar senha">Mostrar</button>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="admin-signup-recovery">Palavra para recuperar a senha</label>
+            <input id="admin-signup-recovery" name="recoveryAnswer" type="text" placeholder="Escolha uma palavra fácil de lembrar" autocomplete="off" minlength="3" required />
+            <small class="password-hint">Guarde essa palavra: ela será solicitada se você esquecer a senha.</small>
+          </div>
+          <p class="form-message" id="admin-signup-message" role="alert"></p>
+          <button class="primary-button login-button" type="submit">Criar conta de administrador <span>→</span></button>
+        </form>
+        <p class="form-switch" id="login-switch">Novo cliente? <button type="button" id="show-signup">Criar conta</button></p>
         <p class="form-switch hidden" id="signup-switch">Já tem uma conta? <button type="button" id="show-login">Entrar</button></p>
-        <p class="login-security">🔒 Seus dados ficam somente neste navegador nesta demonstração.</p>
+        <p class="form-switch" id="admin-switch"><button type="button" id="show-admin-login">Acesso do administrador</button></p>
+        <p class="form-switch hidden" id="admin-login-switch"><button type="button" id="show-admin-signup">Não tem conta? Cadastre-se</button></p>
+        <p class="form-switch hidden" id="admin-signup-switch"><button type="button" id="back-to-admin-login">Já tem uma conta?</button></p>
+        <p class="form-switch hidden" id="admin-recover-switch"><button type="button" id="back-to-admin-login-from-recover">Voltar</button></p>
+        <p class="form-switch hidden" id="admin-back-switch"><button type="button" id="back-to-customer">Voltar para cliente</button></p>
+        <p class="login-security">Demonstração local: não use senhas reais. Os dados ficam neste navegador.</p>
       </div>
       <div class="login-art" aria-hidden="true">
-        <div class="login-sun"></div>
-        <span>🍎</span><span>🥕</span><span>🥬</span><span>🍊</span>
-        <p>comida de verdade,<br /><em>todos os dias.</em></p>
+        <img class="login-produce-image" src="assets/quitanda-cesta.jpg" alt="" />
+        <p>Quitanda do Gaspar,<br /><em>fresquinho todo dia.</em></p>
+      </div>
+    </section>
+
+    <section class="admin-dashboard hidden" id="admin-dashboard">
+      <div class="container admin-dashboard-content">
+        <div>
+          <p class="eyebrow">Área restrita</p>
+          <h1>Painel do administrador</h1>
+          <p>Gerencie o estoque da Quitanda do Gaspar por aqui.</p>
+        </div>
+        <div class="admin-controls">
+          <div class="admin-credentials">
+            <p class="credentials-label">Credenciais administrativas:</p>
+            <div class="credentials-display">
+              <div class="credential-item">
+                <label>Usuário:</label>
+                <span id="admin-username-display">admin</span>
+              </div>
+              <div class="credential-item">
+                <label>Senha:</label>
+                <div class="password-display">
+                  <span id="admin-password-display">••••••••</span>
+                  <button type="button" class="toggle-password-btn" id="toggle-admin-password" aria-label="Mostrar senha">Mostrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="secondary-button" id="change-admin-password-button" type="button">Alterar senha</button>
+        </div>
+        <div id="change-password-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="change-password-title">
+          <div class="modal-content">
+            <h2 id="change-password-title">Alterar senha do administrador</h2>
+            <form id="change-password-form" novalidate>
+              <div class="form-field">
+                <label for="current-password">Senha atual</label>
+                <div class="password-input">
+                  <input id="current-password" name="current" type="password" placeholder="Digite sua senha atual" required />
+                  <button class="toggle-password" type="button" data-password-target="current-password" aria-label="Mostrar senha">Mostrar</button>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="new-password">Nova senha</label>
+                <div class="password-input">
+                  <input id="new-password" name="new" type="password" placeholder="Digite uma nova senha" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}" minlength="6" required />
+                  <button class="toggle-password" type="button" data-password-target="new-password" aria-label="Mostrar senha">Mostrar</button>
+                </div>
+                <small class="password-hint">A senha deve ter letra maiúscula, minúscula e número.</small>
+              </div>
+              <div class="form-field">
+                <label for="confirm-new-password">Confirmar nova senha</label>
+                <div class="password-input">
+                  <input id="confirm-new-password" name="confirm" type="password" placeholder="Digite a nova senha novamente" autocomplete="new-password" required />
+                  <button class="toggle-password" type="button" data-password-target="confirm-new-password" aria-label="Mostrar senha">Mostrar</button>
+                </div>
+              </div>
+              <p class="form-message" id="change-password-message" role="alert"></p>
+              <div class="modal-buttons">
+                <button type="submit" class="primary-button">Alterar senha</button>
+                <button type="button" class="secondary-button" id="close-password-modal">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <button class="primary-button" id="admin-logout-button" type="button">Sair do painel <span>→</span></button>
       </div>
     </section>
 
     <header class="site-header">
       <div class="container header-content">
-        <a class="logo" href="#inicio" aria-label="Verdejar, início">
+        <a class="logo" href="#inicio" aria-label="Quitanda do Gaspar, início">
           <span class="logo-icon">✿</span>
-          <span>verdejar</span>
+          <span>Quitanda do Gaspar</span>
         </a>
 
         <nav class="main-nav" aria-label="Navegação principal">
           <a href="#produtos">Produtos</a>
-          <a href="#estoque">Estoque</a>
           <a href="#sobre">Nossa história</a>
           <a href="#contato">Contato</a>
         </nav>
@@ -242,7 +374,7 @@
             <p class="eyebrow">Nossa história</p>
             <h2>Pequena no tamanho.<br /><em>Gigante no cuidado.</em></h2>
             <p>
-              A Verdejar nasceu da vontade de aproximar você de quem planta.
+              A Quitanda do Gaspar nasceu da vontade de aproximar você de quem planta.
               Trabalhamos com pequenos produtores e colocamos qualidade,
               respeito à terra e sabor em cada escolha.
             </p>
@@ -254,11 +386,11 @@
 
     <footer class="site-footer" id="contato">
       <div class="container footer-content">
-        <div><a class="logo footer-logo" href="#inicio"><span class="logo-icon">✿</span><span>verdejar</span></a><p>Comida de verdade, todos os dias.</p></div>
+        <div><a class="logo footer-logo" href="#inicio"><span class="logo-icon">✿</span><span>Quitanda do Gaspar</span></a><p>Comida de verdade, todos os dias.</p></div>
         <div><strong>Horário</strong><p>Seg a sáb, 8h às 18h</p></div>
         <div><strong>Contato</strong><p>oi@verdejar.com.br<br />(11) 99999-0000</p></div>
       </div>
-      <div class="container copyright">© 2024 Verdejar. Feito com carinho.</div>
+      <div class="container copyright">© 2026 Quitanda do Gaspar. Feito com carinho.</div>
     </footer>
 
     <div class="cart-overlay hidden" id="cart-overlay"></div>

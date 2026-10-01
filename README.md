@@ -1,8 +1,9 @@
-# Verdejar — aplicativo de quitanda
+# Quitanda do Gaspar
 
 Aplicativo front-end feito apenas com **HTML, CSS e JavaScript**, sem frameworks.
-Ele simula uma quitanda online com catálogo, busca por nome, filtros por categoria
-e uma sacola de compras funcional.
+O app simula uma quitanda online com login e cadastro de clientes, catálogo,
+busca por nome, filtros por categoria, sacola de compras e painel administrativo
+para controle de estoque.
 
 ## Como executar
 
@@ -40,19 +41,20 @@ trocar a identidade visual inteira em um só lugar.
 O arquivo `script.js` começa com um array chamado `products`. Cada objeto
 representa um produto com nome, preço, categoria e emoji.
 
-Antes do catálogo, a aplicação também exibe uma tela de login. O formulário
-valida nome, e-mail e senha, e guarda somente o nome e o e-mail no
-`localStorage`. A senha não é salva. O botão **Sair** remove essa sessão e
-mostra a tela de login novamente.
+Antes da loja, a tela de login solicita nome completo e senha. O cadastro de
+cliente solicita nome, sobrenome e senha. A senha precisa ter pelo menos seis
+caracteres, uma letra maiúscula, uma letra minúscula e um número. Os botões
+**Mostrar/Ocultar** permitem conferir a senha digitada.
 
-Também existe a tela **Cadastre-se**. Ela solicita nome completo, e-mail, senha
-e repetição da senha. A senha precisa ter no mínimo seis caracteres, uma letra
-maiúscula, uma letra minúscula e um número. O JavaScript compara os dois campos
-antes de criar a sessão.
-
-No login, o e-mail foi retirado: agora são solicitados apenas nome e senha.
-Os botões **Mostrar/Ocultar** permitem visualizar temporariamente a senha no
-login e no cadastro, inclusive nas duas confirmações do cadastro.
+O acesso do administrador é separado: a conta de cliente não recebe acesso ao
+painel nem ao controle de estoque. Na opção **Acesso do administrador**, escolha
+**Cadastre-se** para criar a primeira conta. Informe um usuário, uma senha forte
+e uma palavra de recuperação; depois do cadastro, o painel administrativo será
+aberto. O administrador pode cadastrar itens e consultar quantidades, custos,
+preços e lucro estimado.
+No painel, o administrador pode mostrar ou ocultar a própria senha e alterá-la.
+O link **Esqueceu a senha?** permite redefini-la usando a palavra de recuperação
+definida no cadastro.
 
 ### 4. Controle de estoque
 
@@ -64,8 +66,8 @@ custo e preço de venda. Os cálculos são:
 - `Valor total em estoque = quantidade × preço de custo`
 - `Lucro estimado = quantidade × lucro por unidade`
 
-Os produtos ficam salvos no `localStorage` do navegador e podem ser removidos
-pelo botão **Excluir**.
+Os produtos ficam salvos no `localStorage` deste navegador e podem ser
+removidos pelo botão **Excluir**.
 
 Depois, o objeto `state` guarda o estado atual da aplicação:
 
@@ -81,13 +83,16 @@ As funções principais são:
 - `renderCart()`: recalcula quantidade e preço total;
 - `openCart()` e `closeCart()`: abrem e fecham a sacola.
 
-### 4. Como estudar e evoluir
+### 5. Como estudar e evoluir
 
 1. Altere um produto no array `products` e atualize o navegador.
 2. Troque as cores no começo do `styles.css`.
 3. Adicione uma nova categoria e crie produtos para ela.
 4. Substitua os emojis por imagens e use uma API ou banco de dados quando quiser transformar a demonstração em uma loja real.
 
-Esta versão ainda não salva pedidos em um servidor e o botão de checkout apenas
-exibe uma mensagem. Para produção, seria necessário backend, autenticação e
-integração com pagamento.
+Esta é uma demonstração somente front-end: as credenciais e os dados ficam no
+navegador e podem ser vistos ou alterados por quem o utiliza. O acesso
+administrativo não é seguro para produção e a senha do cliente é armazenada
+localmente sem proteção. O checkout apenas exibe uma mensagem; uma loja real
+precisa de backend com autenticação segura, banco de dados e integração de
+pagamento.
